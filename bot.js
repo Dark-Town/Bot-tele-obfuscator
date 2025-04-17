@@ -5,10 +5,10 @@ const path = require('path');
 const fetch = require('node-fetch');
 const ytdl = require('@vreden/youtube_scraper');
 const yts = require('yt-search');
-const token = '8184484911:AAGKodzaFvZAx4l2j1syNayPRe9H0-mnbL0';
+const token = '8104653263:AAGBJug5XeN09C4h-bkjTjdSDwzHNJHB9vc';
 const Hangz = new TelegramBot(token, { polling: true });
 const logoPath = path.join(__dirname, 'logo.jpg');
-const premiumUsers = [6275668055, 688113926, 5581580711];
+const premiumUsers = [7080079152];
 
 Hangz.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
