@@ -1,20 +1,20 @@
+# Use the official Node.js image as a base
+FROM node:14
 
-FROM node:lts-buster
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-RUN apt-get update && \
-  apt-get install -y \
-  ffmpeg \
-  imagemagick \
-  webp && \
-  apt-get upgrade -y && \
-  rm -rf /var/lib/apt/lists/*
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
 
-COPY package.json .
+# Install dependencies
+RUN npm install
 
-RUN npm install && npm install qrcode-terminal
-
+# Copy the rest of the application code
 COPY . .
 
-EXPOSE 5000
+# Expose the port the app runs on
+EXPOSE 3000
 
+# Command to run the application
 CMD ["node", "bot.js"]
