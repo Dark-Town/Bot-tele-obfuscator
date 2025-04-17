@@ -51,7 +51,7 @@ Hangz.on('callback_query', async (callbackQuery) => {
       if (command === 'ytmp4') {
         const res = await ytdl.ytmp4(link);
         if (!res.status || !res.download?.url) {
-          return Hangz.sendMessage(chatId, `❌ Terjadi kesalahan saat mengunduh video.`);
+          return Hangz.sendMessage(chatId, `❌ An error occurred while downloading the video.`);
         }
         await Hangz.sendVideo(chatId, res.download.url, {
           caption: res.title || 'Video'
@@ -59,23 +59,23 @@ Hangz.on('callback_query', async (callbackQuery) => {
       }
     } catch (e) {
       console.error('Callback error:', e);
-      Hangz.sendMessage(chatId, `❌ Terjadi kesalahan: ${e.message}`);
+      Hangz.sendMessage(chatId, `❌ An error occurred: ${e.message}`);
     }
     return;
   }
   switch (data) {
     case 'obfuscate_hard':
       if (premiumUsers.includes(userId)) {
-        Hangz.sendMessage(chatId, 'Anda memilih Obfuscate Hard. Silakan kirim file JavaScript.');
+        Hangz.sendMessage(chatId, 'You selected Obfuscate Hard. Please send the JavaScript file.');
       } else {
-        Hangz.sendMessage(chatId, 'Fitur ini hanya tersedia untuk pengguna premium.');
+        Hangz.sendMessage(chatId, 'This feature is only available for premium use.');
       }
       break;
     case 'check_id':
-      Hangz.sendMessage(chatId, `ID Telegram Anda: \`${userId}\`.`, { parse_mode: 'Markdown' });
+      Hangz.sendMessage(chatId, `Your Telegram ID: \`${userId}\`.`, { parse_mode: 'Markdown' });
       break;
     case 'feature_list':
-      Hangz.sendMessage(chatId, 'Fitur yang tersedia:\n- Obfuscate Hard (Premium)\n- Play YouTube\n- Cek ID Telegram\n- Daftar Fitur\n- Bantuan');
+      Hangz.sendMessage(chatId, 'Available features:\n- Obfuscate Hard (Premium)\n- Play YouTube\n- Check Telegram ID\n- Feature List\n- Help');
       break;
     case 'help':
       Hangz.sendMessage(chatId, 'Cara menggunakan bot:\n1. Kirim file JavaScript.\n2. Pilih tingkat obfuscation.\n3. Bot akan mengirimkan file yang telah diobfuscate.');
