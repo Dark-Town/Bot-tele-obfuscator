@@ -5,7 +5,7 @@ const path = require('path');
 const fetch = require('node-fetch');
 const ytdl = require('@vreden/youtube_scraper');
 const yts = require('yt-search');
-const token = '8104653263:AAGBJug5XeN09C4h-bkjTjdSDwzHNJHB9vc';
+const token = '7653249811:AAEk7AzVb4Rcl-8Wb5ZLYqA8SfbD1W7pmqs';
 const Hangz = new TelegramBot(token, { polling: true });
 const logoPath = path.join(__dirname, 'logo.jpg');
 const premiumUsers = [7080079152];
@@ -78,13 +78,13 @@ Hangz.on('callback_query', async (callbackQuery) => {
       Hangz.sendMessage(chatId, 'Available features:\n- Obfuscate Hard (Premium)\n- Play YouTube\n- Check Telegram ID\n- Feature List\n- Help');
       break;
     case 'help':
-      Hangz.sendMessage(chatId, 'Cara menggunakan bot:\n1. Kirim file JavaScript.\n2. Pilih tingkat obfuscation.\n3. Bot akan mengirimkan file yang telah diobfuscate.');
+      Hangz.sendMessage(chatId, 'How to use the bot:\n1. Send a JavaScript file.\n2. Choose the level of obfuscation.\n3. The bot will send back the obfuscated file. \n4. Join our channel https://t.me/paidtechzone.');
       break;
     case 'play_list':
-      Hangz.sendMessage(chatId, 'Silakan ketik perintah seperti\nContoh: /play lathi');
+      Hangz.sendMessage(chatId, 'Please type the command like\nExample: /play lil crone');
       break;
     default:
-      Hangz.sendMessage(chatId, `Error: Perintah tidak dikenali (${data})`);
+      Hangz.sendMessage(chatId, `Error: Command not recognized (${data})`);
   }
 });
 
@@ -93,11 +93,11 @@ Hangz.onText(/\/play (.+)/, async (msg, match) => {
   const query = match[1];
   if (!query) return;
 
-  await Hangz.sendMessage(chatId, '🔎 Mencari di YouTube...');
+  await Hangz.sendMessage(chatId, '🔎 Searching on YouTube...');
 
   try {
     let searchResult = await yts(query);
-    if (!searchResult.all.length) throw new Error('Tidak ditemukan');
+    if (!searchResult.all.length) throw new Error('Not found');
 
     let video = searchResult.all[0];
     let caption = `${video.title}\n${video.url}\n\nAuthor: ${video.author.name}\nDuration: ${video.timestamp}`;
@@ -106,14 +106,14 @@ Hangz.onText(/\/play (.+)/, async (msg, match) => {
       caption: caption,
       reply_markup: {
         inline_keyboard: [[
-          { text: 'Dapatkan Video', callback_data: `ytmp4|${video.url}` },
-          { text: 'Dapatkan Audio', callback_data: `ytmp3|${video.url}` }
+          { text: 'Download Video', callback_data: `ytmp4|${video.url}` },
+          { text: 'Download Audio', callback_data: `ytmp3|${video.url}` }
         ]]
       }
     });
 
   } catch (error) {
-    Hangz.sendMessage(chatId, `❌ Terjadi kesalahan: ${error.message}`);
+    Hangz.sendMessage(chatId, `❌ An error occurred.: ${error.message}`);
   }
 });
 
@@ -122,7 +122,7 @@ Hangz.on('document', async (msg) => {
   const fileId = msg.document.file_id;
   const fileName = msg.document.file_name;
   if (!fileName.endsWith('.js')) {
-    return Hangz.sendMessage(chatId, '❌ Harap kirim file dengan format .js untuk diobfuscate.');
+    return Hangz.sendMessage(chatId, '❌ Please send the file in .js format to be obfuscated.');
   }
   try {
     const file = await Hangz.getFile(fileId);
@@ -157,10 +157,10 @@ Hangz.on('document', async (msg) => {
     const outputPath = path.join(__dirname, 'result.js');
     fs.writeFileSync(outputPath, obfuscatedCode);
     Hangz.sendDocument(chatId, fs.createReadStream(outputPath), {
-      caption: '✅ Hasil obfuscation telah selesai. Silakan unduh file ini.'
+      caption: '✅ The obfuscation result is complete. Please download this file.'
     });
   } catch (error) {
-    Hangz.sendMessage(chatId, `❌ Terjadi kesalahan saat mengobfuscate kode: ${error.message}`);
+    Hangz.sendMessage(chatId, `❌ An error occurred while obfuscating the code.: ${error.message}`);
   }
 });
         
