@@ -13,7 +13,7 @@ const premiumUsers = [7080079152];
 Hangz.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   Hangz.sendPhoto(chatId, fs.readFileSync(logoPath), {
-    caption: `Welcome to the Paid Tech Zone Bot!\n\nChoose a menu below:`,
+    caption: `Welcome to Paid Tech Zone Best 2025 Bot!\n\nChoose a menu below:`,
     reply_markup: {
       inline_keyboard: [
         [
@@ -22,7 +22,7 @@ Hangz.onText(/\/start/, (msg) => {
           { text: 'Help', callback_data: 'help' },
         ],
         [{ text: 'Check Telegram ID', callback_data: 'check_id' }],
-        [{ text: 'Play Song', callback_data: 'play_list' }]
+        [{ text: 'Play Video or Song', callback_data: 'play_list' }]
       ],
     },
   });
@@ -35,14 +35,14 @@ Hangz.on('callback_query', async (callbackQuery) => {
   if (data.startsWith('ytmp3|') || data.startsWith('ytmp4|')) {
     const [command, link] = data.split('|');
     if (!link || !link.startsWith('https://')) {
-      return Hangz.sendMessage(chatId, '❌ Invalid link.');
+      return Hangz.sendMessage(chatId, '❌ The link is not valid.');
     }
     try {
-      await Hangz.sendMessage(chatId, '⏳ Downloading, please wait...');
+      await Hangz.sendMessage(chatId, '⏳ Processing, please wait...');
       if (command === 'ytmp3') {
         const res = await ytdl.ytmp3(link);
         if (!res.status || !res.download?.url) {
-          return Hangz.sendMessage(chatId, `❌ An error occurred while downloading audio.`);
+          return Hangz.sendMessage(chatId, `❌ An error occurred while downloading the audio.`);
         }
         await Hangz.sendAudio(chatId, res.download.url, {}, {
           filename: `${res.title || 'audio'}.mp3`
@@ -51,7 +51,7 @@ Hangz.on('callback_query', async (callbackQuery) => {
       if (command === 'ytmp4') {
         const res = await ytdl.ytmp4(link);
         if (!res.status || !res.download?.url) {
-          return Hangz.sendMessage(chatId, `❌ An error occurred while downloading video.`);
+          return Hangz.sendMessage(chatId, `❌ Terjadi kesalahan saat mengunduh video.`);
         }
         await Hangz.sendVideo(chatId, res.download.url, {
           caption: res.title || 'Video'
@@ -59,32 +59,32 @@ Hangz.on('callback_query', async (callbackQuery) => {
       }
     } catch (e) {
       console.error('Callback error:', e);
-      Hangz.sendMessage(chatId, `❌ An error occurred: ${e.message}`);
+      Hangz.sendMessage(chatId, `❌ Terjadi kesalahan: ${e.message}`);
     }
     return;
   }
   switch (data) {
     case 'obfuscate_hard':
       if (premiumUsers.includes(userId)) {
-        Hangz.sendMessage(chatId, 'You have chosen Obfuscate Hard. Please send a JavaScript file.');
+        Hangz.sendMessage(chatId, 'Anda memilih Obfuscate Hard. Silakan kirim file JavaScript.');
       } else {
-        Hangz.sendMessage(chatId, 'This feature is only available for premium users.');
+        Hangz.sendMessage(chatId, 'Fitur ini hanya tersedia untuk pengguna premium.');
       }
       break;
     case 'check_id':
-      Hangz.sendMessage(chatId, `Your Telegram ID: \`${userId}\`.`, { parse_mode: 'Markdown' });
+      Hangz.sendMessage(chatId, `ID Telegram Anda: \`${userId}\`.`, { parse_mode: 'Markdown' });
       break;
     case 'feature_list':
-      Hangz.sendMessage(chatId, 'Available features:\n- Obfuscate Hard (Premium)\n- Play YouTube\n- Check Telegram ID\n- Feature List\n- Help');
+      Hangz.sendMessage(chatId, 'Fitur yang tersedia:\n- Obfuscate Hard (Premium)\n- Play YouTube\n- Cek ID Telegram\n- Daftar Fitur\n- Bantuan');
       break;
     case 'help':
-      Hangz.sendMessage(chatId, 'Choose the level of obfuscation.\n3. The bot will send back the obfuscated file.');
+      Hangz.sendMessage(chatId, 'Cara menggunakan bot:\n1. Kirim file JavaScript.\n2. Pilih tingkat obfuscation.\n3. Bot akan mengirimkan file yang telah diobfuscate.');
       break;
     case 'play_list':
-      Hangz.sendMessage(chatId, 'Please type a command like\nExample: /play Lil crone');
+      Hangz.sendMessage(chatId, 'Silakan ketik perintah seperti\nContoh: /play lathi');
       break;
     default:
-      Hangz.sendMessage(chatId, `Error: Unrecognized command  (${data})`);
+      Hangz.sendMessage(chatId, `Error: Perintah tidak dikenali (${data})`);
   }
 });
 
@@ -93,11 +93,11 @@ Hangz.onText(/\/play (.+)/, async (msg, match) => {
   const query = match[1];
   if (!query) return;
 
-  await Hangz.sendMessage(chatId, '🔎 Searching Your Item on YouTube...');
+  await Hangz.sendMessage(chatId, '🔎 Mencari di YouTube...');
 
   try {
     let searchResult = await yts(query);
-    if (!searchResult.all.length) throw new Error('Error Search please contact owner');
+    if (!searchResult.all.length) throw new Error('Tidak ditemukan');
 
     let video = searchResult.all[0];
     let caption = `${video.title}\n${video.url}\n\nAuthor: ${video.author.name}\nDuration: ${video.timestamp}`;
@@ -106,14 +106,14 @@ Hangz.onText(/\/play (.+)/, async (msg, match) => {
       caption: caption,
       reply_markup: {
         inline_keyboard: [[
-          { text: 'Download Video', callback_data: `ytmp4|${video.url}` },
-          { text: 'Download Song', callback_data: `ytmp3|${video.url}` }
+          { text: 'Dapatkan Video', callback_data: `ytmp4|${video.url}` },
+          { text: 'Dapatkan Audio', callback_data: `ytmp3|${video.url}` }
         ]]
       }
     });
 
   } catch (error) {
-    Hangz.sendMessage(chatId, `❌ An error occurred: ${error.message}`);
+    Hangz.sendMessage(chatId, `❌ Terjadi kesalahan: ${error.message}`);
   }
 });
 
@@ -122,7 +122,7 @@ Hangz.on('document', async (msg) => {
   const fileId = msg.document.file_id;
   const fileName = msg.document.file_name;
   if (!fileName.endsWith('.js')) {
-    return Hangz.sendMessage(chatId, '❌ Please send a file in .js format to obfuscate.');
+    return Hangz.sendMessage(chatId, '❌ Harap kirim file dengan format .js untuk diobfuscate.');
   }
   try {
     const file = await Hangz.getFile(fileId);
@@ -157,10 +157,10 @@ Hangz.on('document', async (msg) => {
     const outputPath = path.join(__dirname, 'result.js');
     fs.writeFileSync(outputPath, obfuscatedCode);
     Hangz.sendDocument(chatId, fs.createReadStream(outputPath), {
-      caption: '✅ The obfuscation result is complete. Please download this file.'
+      caption: '✅ Hasil obfuscation telah selesai. Silakan unduh file ini.'
     });
   } catch (error) {
-    Hangz.sendMessage(chatId, `❌ An error occurred while obfuscating the code: ${error.message}`);
+    Hangz.sendMessage(chatId, `❌ Terjadi kesalahan saat mengobfuscate kode: ${error.message}`);
   }
 });
-                                   
+        
