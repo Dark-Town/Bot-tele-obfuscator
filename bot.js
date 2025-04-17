@@ -9,7 +9,6 @@ const token = '7653249811:AAEk7AzVb4Rcl-8Wb5ZLYqA8SfbD1W7pmqs';
 const Hangz = new TelegramBot(token, { polling: true });
 const logoPath = path.join(__dirname, 'logo.jpg');
 const premiumUsers = [7080079152];
-const port = process.env.PORT || 4000;
 
 Hangz.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
