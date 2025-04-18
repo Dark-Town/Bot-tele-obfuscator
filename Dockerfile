@@ -1,12 +1,8 @@
-FROM node:lts-buster
-
-RUN npm install -g yarn && yarn install
-
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port your application runs on
-EXPOSE 3000
-
-# Command to run the application
-CMD ["node", "bot.js"]
+   FROM node:14
+   WORKDIR /usr/src/app
+   COPY package*.json ./
+   RUN yarn install 
+   COPY . .
+   EXPOSE 3000
+   CMD ["node", "bot.js"]
+   
