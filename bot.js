@@ -9,11 +9,29 @@ const token = '7653249811:AAEk7AzVb4Rcl-8Wb5ZLYqA8SfbD1W7pmqs';
 const Hangz = new TelegramBot(token, { polling: true });
 const logoPath = path.join(__dirname, 'logo.jpg');
 const premiumUsers = [7080079152];
-const express = require('express');
+const app = express();
+
+// Set the port from environment variable or fallback to 3000
 const PORT = process.env.PORT || 3000;
+
+// Define a simple route
+app.get('/', (req, res) => {
+  res.send('Hello, this is your Telegram bot server running!');
+});
+
+// Start the Express server
 app.listen(PORT, () => {
-console.log(Server is running on port ${PORT});});
-   
+  console.log(Express server is running on port ${PORT});
+});
+
+// Example of handling a Telegram message
+Hangz.on('message', (msg) => {
+  const chatId = msg.chat.id;
+
+  // Example response to a specific command
+  if (msg.text === '/start') {
+    Hangz.sendMessage(chatId, 'Welcome to the Hangz bot! How can I assist you today?');
+  } else if (msg.text === '/premium') {
 
 Hangz.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
